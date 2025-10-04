@@ -1,103 +1,153 @@
-import Image from "next/image";
+'use client'
+
+import { Button } from '@/app/components/ui/button';
+import { HackathonFilters } from '@/app/components/hackathons/HackathonFilters';
+import { FeaturedHackathon } from '@/app/components/hackathons/FeaturedHackathon';
+import { Badge } from '@/app/components/ui/badge';
+import { formatUSD } from '@/lib/utils';
+import { Users, Link2 } from 'lucide-react';
+import { MainLayout } from '@/app/components/layout/MainLayout';
+import Link from 'next/link';
 
 export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+  const hackathons = [{
+    id: 'chainspark',
+    title: 'ChainSpark',
+    subtitle: 'HACKATHON',
+    description: 'DeFi Builders Edition',
+    details: 'Smart Contracts & Financial Inclusion',
+    status: 'live',
+    registrationClose: '2023-12-31',
+    registrationDaysLeft: 12,
+    techStack: 'All tech stack',
+    level: 'All levels accepted',
+    totalPrize: 38000.0,
+    location: 'Online',
+    date: 'OCTOBER 12-16, 2024',
+    bgColor: 'bg-[#121926]',
+    textColor: 'text-yellow-400',
+    participants: 405
+  }, {
+    id: 'web3-innovate',
+    title: 'Web3',
+    subtitle: 'Innovate Jam',
+    description: 'AI & Blockchain Edition',
+    details: '',
+    status: 'voting',
+    registrationClose: '2023-12-25',
+    registrationDaysLeft: 8,
+    techStack: 'All tech stack',
+    level: 'All levels accepted',
+    totalPrize: 30000.0,
+    location: 'Online',
+    date: 'May 10-12, 2024',
+    bgColor: 'bg-[#121926]',
+    textColor: 'text-purple-400',
+    logo: 'Panther INNOVATIONS',
+    participants: 320
+  }, {
+    id: 'coindora',
+    title: 'COINDORA',
+    subtitle: 'HACKFEST',
+    description: 'ASTRAL COSMOS CHALLENGE',
+    details: '',
+    status: 'upcoming',
+    registrationClose: '2024-01-15',
+    registrationDaysLeft: 20,
+    techStack: 'All tech stack',
+    level: 'All levels accepted',
+    totalPrize: 25000.0,
+    location: 'Online',
+    date: 'JANUARY 15-20, 2024',
+    bgColor: 'bg-[#121926]',
+    textColor: 'text-green-400',
+    participants: 150
+  }];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'live':
+        return <Badge variant="default" className="bg-green-500 text-white">LIVE</Badge>;
+      case 'voting':
+        return <Badge variant="default" className="bg-purple-500 text-white">VOTING</Badge>;
+      case 'upcoming':
+        return <Badge variant="default" className="bg-blue-500 text-white">UPCOMING</Badge>;
+      default:
+        return <Badge variant="outline">{status.toUpperCase()}</Badge>;
+    }
+  };
+
+  return (
+    <MainLayout>
+      <div className="min-h-screen bg-gray-50">
+        <div className="container mx-auto px-4 py-8">
+          <div className="mb-8">
+            <h1 className="text-4xl font-bold text-gray-900 mb-4">
+              Discover Amazing Hackathons
+            </h1>
+            <p className="text-xl text-gray-600">
+              Join exciting competitions and showcase your skills
+            </p>
+          </div>
+
+          <HackathonFilters />
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+            {hackathons.map((hackathon) => (
+              <Link
+                key={hackathon.id}
+                href={`/hackathons/${hackathon.id}`}
+                className="block group"
+              >
+                <div className={`${hackathon.bgColor} rounded-lg overflow-hidden shadow-lg transition-transform duration-300 group-hover:scale-105`}>
+                  <div className={`p-6 ${hackathon.textColor}`}>
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="text-sm font-medium opacity-80">{hackathon.subtitle}</p>
+                        <h3 className="text-2xl font-bold">{hackathon.title}</h3>
+                      </div>
+                      {getStatusBadge(hackathon.status)}
+                    </div>
+
+                    <p className="text-lg mb-4 opacity-90">{hackathon.description}</p>
+
+                    {hackathon.details && (
+                      <p className="text-sm mb-4 opacity-75">{hackathon.details}</p>
+                    )}
+
+                    <div className="flex items-center gap-4 mb-4 text-sm">
+                      <span>{hackathon.location}</span>
+                      <span>•</span>
+                      <span>{hackathon.date}</span>
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Users className="w-4 h-4" />
+                        <span className="text-sm">{hackathon.participants} participants</span>
+                      </div>
+                      <div className="font-bold">
+                        {formatUSD(hackathon.totalPrize)}
+                      </div>
+                    </div>
+
+                    <div className="mt-4 pt-4 border-t border-white/20">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm opacity-75">
+                          {hackathon.registrationDaysLeft} days left to register
+                        </span>
+                        <Button variant="secondary" size="sm">
+                          View Details
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </div>
+    </MainLayout>
   );
 }
